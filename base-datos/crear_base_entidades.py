@@ -5,7 +5,7 @@ from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Date, ForeignKey
 
 class Facultad(Base):
     __tablename__ = 'facultad'
@@ -15,6 +15,9 @@ class Facultad(Base):
     decano = Column(String)
     
     carreras = relationship('Carrera', back_populates='facultad')
+    
+    def __str__(self):
+        return f"{self.id} - {self.nombre} - {self.ubicacion} - Decano: {self.decano}"
 
 class Carrera(Base):
     __tablename__ = 'carrera'
@@ -25,6 +28,9 @@ class Carrera(Base):
     
     facultad = relationship('Facultad', back_populates='carreras')
     profesores = relationship('Profesor', back_populates='carrera')
+    
+    def __str__(self):
+        return f"{self.id} - {self.nombre} - Código: {self.codigo} - ID Facultad: {self.facultad_id}"
 
 class Profesor(Base):
     __tablename__ = 'profesor'
@@ -37,6 +43,9 @@ class Profesor(Base):
     
     carrera = relationship('Carrera', back_populates='profesores')
     recursos = relationship('RecursoAcademico', back_populates='profesor')
+    
+    def __str__(self):
+        return f"{self.id} - {self.nombres} {self.apellidos} - {self.correo} - Especialidad: {self.especialidad}"
 
 class RecursoAcademico(Base):
     __tablename__ = 'recurso_academico'
@@ -48,5 +57,8 @@ class RecursoAcademico(Base):
     profesor_id = Column(Integer, ForeignKey('profesor.id'))
     
     profesor = relationship('Profesor', back_populates='recursos')
+    
+    def __str__(self):
+        return f"{self.id} - {self.titulo} - Tipo: {self.tipo} - Fecha: {self.fecha_publicacion}"
     
 Base.metadata.create_all(engine)

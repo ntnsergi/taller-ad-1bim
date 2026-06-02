@@ -8,6 +8,6 @@ from sqlalchemy import create_engine
 # sudo apt install libpq-dev
 # pip install psycopg2
 engine = create_engine("postgresql+psycopg2://user:password@localhost:5434/user", echo=True)
-s
+
 
 
